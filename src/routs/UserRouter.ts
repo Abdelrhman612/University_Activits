@@ -1,0 +1,12 @@
+import express from "express";
+import { verifyToken } from "../middleware/verifyToken";
+import { isAdmin } from "../middleware/isAdmin";
+import * as Users from "../Controllers/UserController";
+const router = express.Router();
+router.get("/", verifyToken, Users.GetUsers);
+router.get("/:Id", Users.GetUser);
+router.patch("/:Id", Users.UpdateUser);
+router.delete("/:Id", verifyToken, isAdmin, Users.deleteUser);
+router.post("/Register", Users.Register);
+router.post("/Login", Users.Login);
+export const GetRouter = router;
