@@ -1,6 +1,6 @@
-import { PrismaClient, roles, user } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
-import { User } from "../UsersSchema/interface";
+import { User } from "../Schema/interfaceUsers";
 import { GenerateJwt } from "../utills/GenerateJwt";
 import { success, fail } from "../utills/HttpStatusText";
 import { userSelectFields } from "../utills/userSelectFields";
@@ -28,8 +28,8 @@ export const Register = asyncWrapper(
       select: userSelectFields,
     });
     if (!firstName || !lastName || !email) {
-      const error = new AppError("Full Name Or Email Is Requierd", 400, fail);
-      return next(error);
+      const err = new AppError("Full Name Or Email Is Requierd", 400, fail);
+      return next(err);
     }
 
     const token = await GenerateJwt({
@@ -73,7 +73,9 @@ export const Login = asyncWrapper(
 export const GetUsers = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const users: User[] = await prisma.user.findMany({
-      select: userSelectFields,
+      include: {
+        activities: true,
+      },
     });
     res.status(200).json({ status: success, data: users });
   }

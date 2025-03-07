@@ -9,4 +9,4 @@ router.patch("/:Id", Users.UpdateUser);
 router.delete("/:Id", verifyToken, isAdmin, Users.deleteUser);
 router.post("/Register", Users.Register);
 router.post("/Login", Users.Login);
-export const GetRouter = router;
+export const UserRouter = router;
