@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Request, Response, NextFunction } from "express";
+import e, { Request, Response, NextFunction } from "express";
 import { User } from "../Schema/interfaceUsers";
 import { GenerateJwt } from "../utills/GenerateJwt";
 import { success, fail } from "../utills/HttpStatusText";
@@ -11,12 +11,17 @@ const prisma = new PrismaClient();
 export const Register = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const { firstName, lastName, email, password, role } = req.body;
+    if (!firstName || !email) {
+      const err = new AppError("Full Name Or Email Is Requierd", 400, fail);
+      return next(err);
+    }
     const OneUser = await prisma.user.findUnique({ where: { email: email } });
     if (OneUser) {
       const error = new AppError("User Is Exists", 400, fail);
       return next(error);
     }
     const HashedPassword = await bcrypt.hash(password, 10);
+
     const AddUser: User = await prisma.user.create({
       data: {
         firstName,
@@ -27,11 +32,6 @@ export const Register = asyncWrapper(
       },
       select: userSelectFields,
     });
-    if (!firstName || !lastName || !email) {
-      const err = new AppError("Full Name Or Email Is Requierd", 400, fail);
-      return next(err);
-    }
-
     const token = await GenerateJwt({
       email: AddUser.email,
       role: AddUser.role,
@@ -54,8 +54,8 @@ export const Login = asyncWrapper(
       where: { email: email },
     });
     if (!OneUser) {
-      res.status(404).json({ success: fail, message: "User is not found" });
-      return;
+      const error = new AppError("User is not found", 404, fail);
+      return next(error);
     }
     const MatchedPassword = await bcrypt.compare(password, OneUser.password);
     if (!MatchedPassword) {
@@ -97,7 +97,6 @@ export const deleteUser = asyncWrapper(
     const userExists = await prisma.user.findUnique({
       where: { id: Id },
     });
-
     if (!userExists) {
       const error = new AppError("User Is Not Found", 404, fail);
       next(error);
