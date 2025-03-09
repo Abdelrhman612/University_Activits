@@ -5,7 +5,7 @@ import * as Users from "../Controllers/UserController";
 const router = express.Router();
 router.get("/", verifyToken, Users.GetUsers);
 router.get("/:Id", Users.GetUser);
-router.patch("/:Id", Users.UpdateUser);
+router.patch("/:Id", verifyToken, isAdmin, Users.UpdateUser);
 router.delete("/:Id", verifyToken, isAdmin, Users.deleteUser);
 router.post("/Register", Users.Register);
 router.post("/Login", Users.Login);

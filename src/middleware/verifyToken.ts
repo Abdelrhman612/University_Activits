@@ -21,7 +21,6 @@ export const verifyToken = (
     return next(Error);
   }
   const token = authHeader.split(" ")[1];
-
   if (!token) {
     const error = new AppError("Invalid token format", 403, fail);
     return next(error);
@@ -34,7 +33,7 @@ export const verifyToken = (
     next();
   } catch (err) {
     const Error = new AppError(
-      "Invalid or expired token. Please log in again",
+      "Invalid or expired toke . Please log in again",
       401,
       error
     );

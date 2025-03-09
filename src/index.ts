@@ -15,10 +15,10 @@ app.all("*", (req, res) => {
     .status(404)
     .json({ status: error, message: "thise resource is not available" });
 });
-app.use((Error: any, req: Request, res: Response, next: NextFunction) => {
-  res.status(Error.statusCode || 500).json({
-    status: Error.statusText,
-    message: Error.message,
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  res.status(err.statusCode || 500).json({
+    status: err.statusText,
+    message: err.message,
   });
 });
 app.listen(PORT, () => {
