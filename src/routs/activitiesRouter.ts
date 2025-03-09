@@ -1,6 +1,10 @@
 import express from "express";
+import { verifyToken } from "../middleware/verifyToken";
+import { isAdmin } from "../middleware/isAdmin";
 import * as activity from "../Controllers/activitiesController";
 const router = express.Router();
 router.post("/", activity.CreateActivitys);
-
+router.get("/", activity.GetActivities);
+router.patch("/:Id", verifyToken, isAdmin, activity.UpdateActivity);
+router.delete("/:Id", verifyToken, isAdmin, activity.deleteActivity);
 export const activityRouter = router;
