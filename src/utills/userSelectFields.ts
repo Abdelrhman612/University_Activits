@@ -2,8 +2,13 @@ export const userSelectFields = {
   id: true,
   firstName: true,
   lastName: true,
-  email: true,
   role: true,
   createdAt: true,
   updatedAt: true,
+};
+export const ActivitySelectFields = {
+  name: true,
+  description: true,
+  status: true,
+  userId: true,
 };
