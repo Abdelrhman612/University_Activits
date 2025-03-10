@@ -73,7 +73,8 @@ export const Login = asyncWrapper(
 export const GetUsers = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const users: User[] = await prisma.user.findMany({
-      include: {
+      select: {
+        ...userSelectFields,
         activities: true,
       },
     });

@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from "express";
 import { asyncWrapper } from "../middleware/asyncWrapper";
 import { AppError } from "../utills/appError";
 import { fail, success } from "../utills/HttpStatusText";
+import { Activity } from "../Schema/interfaceUsers";
+import { ActivitySelectFields } from "../utills/userSelectFields";
 const prisma = new PrismaClient();
 export const CreateActivitys = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -11,8 +13,9 @@ export const CreateActivitys = asyncWrapper(
       const error = new AppError("Name Is Required", 400, fail);
       return next(error);
     }
-    const newActivity = await prisma.activity.create({
+    const newActivity: Activity = await prisma.activity.create({
       data: { name, description, status, userId },
+      select: ActivitySelectFields,
     });
     res.status(201).json({ success: success, date: newActivity });
   }
@@ -34,7 +37,7 @@ export const UpdateActivity = asyncWrapper(
       const error = new AppError("Activity Is Not Found", 404, fail);
       return next(error);
     }
-    const newActivity = await prisma.activity.update({
+    const newActivity: Activity = await prisma.activity.update({
       where: { id: Id },
       data: { name, description, status, userId },
     });
