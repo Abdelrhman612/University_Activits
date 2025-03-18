@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { SECRET_JWT } from "../dotenv/dotenv";
+import { SECRET_JWT } from "../utills/dotenv";
 import { AppError } from "../utills/appError";
 import { fail, error } from "../utills/HttpStatusText";
 interface AuthRequest extends Request {

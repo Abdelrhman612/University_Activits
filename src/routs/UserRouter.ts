@@ -3,10 +3,15 @@ import { verifyToken } from "../middleware/verifyToken";
 import { isAdmin } from "../middleware/isAdmin";
 import * as Users from "../Controllers/UserController";
 const router = express.Router();
-router.get("/", verifyToken, Users.GetUsers);
+router.get("/", verifyToken, isAdmin, Users.GetUsers);
 router.get("/:Id", Users.GetUser);
 router.patch("/:Id", verifyToken, isAdmin, Users.UpdateUser);
+router.put("/ChangePassword/:Id", Users.changeUserPassword);
 router.delete("/:Id", verifyToken, isAdmin, Users.deleteUser);
 router.post("/Register", Users.Register);
 router.post("/Login", Users.Login);
+router.post("/forgetPassword", Users.forgetpassword);
+router.post("/verfiyPassResetCode", Users.verfiyPassResetCode);
+router.put("/ResetPassword", Users.resetPassword);
+
 export const UserRouter = router;

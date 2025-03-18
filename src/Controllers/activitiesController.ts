@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { asyncWrapper } from "../middleware/asyncWrapper";
 import { AppError } from "../utills/appError";
 import { fail, success } from "../utills/HttpStatusText";
-import { Activity } from "../Schema/interfaceUsers";
+import { Activity } from "../SchemaiNterFace/interfaceUsers";
 import { ActivitySelectFields } from "../utills/userSelectFields";
 const prisma = new PrismaClient();
 export const CreateActivitys = asyncWrapper(
