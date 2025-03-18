@@ -1,5 +1,5 @@
 import express from "express";
-import { PORT } from "./dotenv/dotenv";
+import { PORT } from "./utills/dotenv";
 import { ConnectDB } from "./database/db";
 import { UserRouter } from "./routs/UserRouter";
 import { error } from "./utills/HttpStatusText";
