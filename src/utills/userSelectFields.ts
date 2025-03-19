@@ -5,6 +5,7 @@ export const userSelectFields = {
   role: true,
   createdAt: true,
   updatedAt: true,
+  avatar: true,
 };
 export const ActivitySelectFields = {
   name: true,

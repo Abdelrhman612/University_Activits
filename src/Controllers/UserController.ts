@@ -32,6 +32,7 @@ export const Register = asyncWrapper(
         email,
         password: HashedPassword,
         role: role ? role : "Student",
+        avatar: req.file?.filename,
       },
       select: userSelectFields,
     });
@@ -69,7 +70,7 @@ export const Login = asyncWrapper(
       email: OneUser.email,
       role: OneUser.role,
     });
-    res.status(200).json({ status: success, data: token });
+    res.status(200).json({ status: success, data: { token } });
   }
 );
 
