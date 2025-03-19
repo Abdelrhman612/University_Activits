@@ -19,9 +19,10 @@ model User {
   lastName              String
   email                 String    @unique
   password              String
-  PasswordResetCode     String
+  PasswordResetCode     String?
   PasswordResetExpires  DateTime?
   PasswordResetverified Boolean?
+  avatar                String?   @default("/src/Uploads/profile.png")
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt()
   role                  Role      @default(Student)
