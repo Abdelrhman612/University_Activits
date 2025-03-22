@@ -28,6 +28,7 @@ model User {
   role                  Role      @default(Student)
 
   activities Activity[]
+  Payment    Payment[]
 }
 
 enum Role {
@@ -44,10 +45,24 @@ model Activity {
   registeredCount Int            @default(autoincrement())
   user            User?          @relation(fields: [userId], references: [id])
   userId          String?
+  Payment         Payment[]
 }
 
 enum ActivityStatus {
   OPEN
   CLOSED
   COMPLETED
+}
+
+model Payment {
+  id              String   @id @default(uuid())
+  amount          Int
+  currency        String   @default("usd")
+  status          String   @default("pending")
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String
+  activity        Activity @relation(fields: [activityId], references: [id])
+  activityId      String
+  stripeSessionId String   @unique
+  createdAt       DateTime @default(now())
 }
