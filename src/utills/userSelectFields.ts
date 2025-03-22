@@ -8,6 +8,7 @@ export const userSelectFields = {
   avatar: true,
 };
 export const ActivitySelectFields = {
+  id: true,
   name: true,
   description: true,
   status: true,
