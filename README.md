@@ -1,8 +1,6 @@
 # 📚 University Activities API
 
-A complete RESTful API for managing university activities, users, and authentication, including a secure password reset system. Built with **Node.js**, **Express**, **Prisma**, and **PostgreSQL**.
-
-![Screenshot](./screenshot.png)
+A complete RESTful API for managing university activities, users, authentication, payments, and a secure password reset system. Built with **Node.js**, **Express**, **Prisma**, and **PostgreSQL**.
 
 ---
 
@@ -13,10 +11,23 @@ A complete RESTful API for managing university activities, users, and authentica
 - **Role-based Authorization** (Admin/User).
 - **Password Reset System** (Forget Password / Verify Code / Reset Password).
 - **Email notifications** using Nodemailer.
+- **Stripe Payment Integration** (Checkout Session).
+- **Stripe Webhook** to update payment status automatically.
 - **Prisma ORM** with PostgreSQL.
 - **Error handling middleware**.
 - **Input validation** (basic).
 - **Pagination** & **Filtering** (optional if added).
+
+---
+
+## 💳 Stripe Integration
+
+### Stripe Checkout Flow:
+
+1. Create checkout session with `/api/stripe/checkout-session`.
+2. Stripe redirects the user to the payment page.
+3. After successful payment, Stripe triggers `/api/stripe/webhook`.
+4. The webhook will automatically update payment status in the database.
 
 ---
 
@@ -27,6 +38,7 @@ A complete RESTful API for managing university activities, users, and authentica
 - TypeScript
 - JWT Authentication
 - Nodemailer
+- Stripe SDK (Payments)
 - bcryptjs
 - crypto
 
@@ -45,104 +57,104 @@ A complete RESTful API for managing university activities, users, and authentica
 ├── .env
 ├── package.json
 └── README.md
-```
 
----
-
-## ⚙️ Installation
-
-```bash
+⚙️ Installation
+bash
+Copy
+Edit
 git clone https://github.com/your-username/university-activities-api.git
 cd university-activities-api
 npm install
-```
 
-### Setup environment variables in `.env`
-
-```env
+Setup environment variables in .env
+env
+Copy
+Edit
 DATABASE_URL=postgres://username:password@localhost:5432/dbname
 JWT_SECRET=your_jwt_secret
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_app_password
-```
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+STRIPE_SUCCESS_URL=http://localhost:3000/success
+STRIPE_CANCEL_URL=http://localhost:3000/cancel
 
-### Prisma migration
-
-```bash
+Prisma migration
+bash
+Copy
+Edit
 npx prisma migrate dev --name init
-```
 
-### Start the server
-
-```bash
+Start the server
+bash
+Copy
+Edit
 npm run dev
-```
 
----
+🔑 Authentication
+POST /api/v1/auth/register - Register new user.
 
-## 🔑 Authentication
+POST /api/v1/auth/login - Login and receive JWT.
 
-- **POST** `/api/v1/auth/register` - Register new user.
-- **POST** `/api/v1/auth/login` - Login and receive JWT.
-- **POST** `/api/v1/auth/forgetpassword` - Send password reset code.
-- **POST** `/api/v1/auth/verifyresetcode` - Verify reset code.
-- **POST** `/api/v1/auth/resetpassword` - Reset password.
+POST /api/v1/auth/forgetpassword - Send password reset code.
 
----
+POST /api/v1/auth/verifyresetcode - Verify reset code.
 
-## 📚 CRUD API Endpoints
+POST /api/v1/auth/resetpassword - Reset password.
 
-### Users
+📚 CRUD API Endpoints
+Users
+GET /api/v1/users - Get all users.
 
-- **GET** `/api/v1/users` - Get all users.
-- **GET** `/api/v1/users/:id` - Get user by ID.
-- **POST** `/api/v1/users` - Create user.
-- **PUT** `/api/v1/users/:id` - Update user.
-- **DELETE** `/api/v1/users/:id` - Delete user.
+GET /api/v1/users/:id - Get user by ID.
 
-### Activities
+POST /api/v1/users - Create user.
 
-- **GET** `/api/v1/activities` - Get all activities.
-- **GET** `/api/v1/activities/:id` - Get activity by ID.
-- **POST** `/api/v1/activities` - Create activity.
-- **PUT** `/api/v1/activities/:id` - Update activity.
-- **DELETE** `/api/v1/activities/:id` - Delete activity.
+PUT /api/v1/users/:id - Update user.
 
-> ⚠️ Protected Routes: Require `Authorization: Bearer <token>` header.
+DELETE /api/v1/users/:id - Delete user.
 
----
+Activities
+GET /api/v1/activities - Get all activities.
 
-## 🔒 Authorization Roles
+GET /api/v1/activities/:id - Get activity by ID.
 
-- `Admin`: Can manage all users & activities.
-- `User`: Can manage their own profile & view activities.
+POST /api/v1/activities - Create activity.
 
----
+PUT /api/v1/activities/:id - Update activity.
 
-## 📬 Email Service
+DELETE /api/v1/activities/:id - Delete activity.
 
-- Nodemailer setup to send password reset codes.
-- Customizable HTML email templates.
+⚠️ Protected Routes: Require Authorization: Bearer <token> header.
 
----
+💳 Stripe Endpoints
+Payment
+POST /api/stripe/checkout-session - Create Stripe Checkout Session.
 
-## 🧪 Testing
+POST /api/stripe/webhook - Stripe Webhook (internal) to update payment status.
 
-- Use **Postman** or **Insomnia** to test the API.
-- A Postman Collection is included in `/postman/collection.json`.
+🔒 Authorization Roles
+Admin: Can manage all users & activities.
 
----
+User: Can manage their own profile & view activities.
 
-## 📝 License
+📬 Email Service
+Nodemailer setup to send password reset codes.
 
+Customizable HTML email templates.
+
+🧪 Testing
+Use Postman or Insomnia to test the API.
+
+A Postman Collection is included in /postman/collection.json.
+
+📝 License
 This project is licensed under the MIT License.
 
----
+🙌 Author
+Abdo Ayman
 
-## 🙌 Author
+"Built with ❤️ & Node.js."
 
-**Abdo Ayman**
 
----
 
-> "Built with ❤️ & Node.js."
